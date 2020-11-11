@@ -9,6 +9,9 @@ use function Chatium\Blocks\Button;
 use function Chatium\Blocks\Text;
 use function Chatium\Responses\ScreenResponse;
 use function Chatium\Types\Screen;
+use function Chatium\Types\FullScreenStory;
+use function Chatium\Types\Slide;
+use function Chatium\Types\Story;
 
 require_once __DIR__ . "/../../../vendor/autoload.php";
 
@@ -63,27 +66,26 @@ function demoSlides()
     $formattedSlides = [];
 
     foreach ($slides as $key => $slide) {
-        $formattedSlides[] =
-            [
-                "id" => "slide{$key}",
-                "stretchContent" => true,
-                "content" => InlineVideo([
-                    "id" => "slide{$key}/video",
-                    "imageUrl" => $slide["imageUrl"],
-                    "url" => $slide["url"],
-                    "hlsUrl" => $slide["hlsUrl"],
-                    "videoSize" => [
-                        "width" => 900,
-                        "height" => 1600
-                    ],
-                    "videoAspectRatio" => [9, 16],
-                    "repeat" => false,
-                    "ignoreSilentSwitch" => "ignore",
-                    "showControls" => "compact",
-                    "resizeMode" => "cover",
-                ]),
-                "overlay" => $slide["overlay"]
-            ];
+        $formattedSlides[] = Slide([
+            "id" => "slide{$key}",
+            "stretchContent" => true,
+            "content" => InlineVideo([
+                "id" => "slide{$key}/video",
+                "imageUrl" => $slide["imageUrl"],
+                "url" => $slide["url"],
+                "hlsUrl" => $slide["hlsUrl"],
+                "videoSize" => [
+                    "width" => 900,
+                    "height" => 1600
+                ],
+                "videoAspectRatio" => [9, 16],
+                "repeat" => false,
+                "ignoreSilentSwitch" => "ignore",
+                "showControls" => "compact",
+                "resizeMode" => "cover",
+            ]),
+            "overlay" => $slide["overlay"]
+        ]);
     }
 
     return $formattedSlides;
@@ -95,15 +97,15 @@ Flight::route("/", function () {
             Screen(
                 [
                     "title" => "Полноэкранные сторис",
-                    "fullScreenStories" => [
+                    "fullScreenStories" => FullScreenStory([
                         "id" => "fullScreenStories/1",
                         "stories" => [
-                            [
+                            Story([
                                 "id" => "story/slide0/1",
                                 "slides" => demoSlides(),
-                            ]
+                            ])
                         ]
-                    ]
+                    ])
                 ],
                 [
                     Text([
